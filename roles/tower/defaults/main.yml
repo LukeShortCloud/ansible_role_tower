@@ -1,0 +1,27 @@
+---
+work_dir: /home/vagrant
+
+# aio = All-in-one install on one node.
+# all = A supported cluster install with separate nodes for Tower and PostgreSQL.
+# db_replication = An unsupported cluster with PostgreSQL streaming replication.
+deployment_type: aio
+
+tower_version: 3.2.4
+
+tower_hosts:
+  - hostname: tower0.example.com
+    ip_address: 10.0.0.10
+  - hostname: tower1.example.com
+    ip_address: 10.0.0.11
+  - hostname: tower2.example.com
+    ip_address: 10.0.0.12
+  - hostname: tower0.example.com
+    ip_address: 10.0.0.10
+
+postgresql_host:
+  hostname: postgresql0.example.com
+  ip_address: 10.0.0.100
+
+postgresql_replica_host:
+  hostname: postgresql1.example.com
+  ip_address: 10.0.0.101

@@ -1,0 +1,18 @@
+---
+- name: Downloading Ansible Tower
+  get_url:
+    url: "http://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-{{ tower_version }}.tar.gz"
+    dest: "{{ work_dir }}"
+
+- name: Extracting the Ansible Tower tarball
+  unarchive:
+    src: "{{ work_dir }}/ansible-tower-setup-{{ tower_version }}.tar.gz"
+    dest: "{{ work_dir }}"
+
+- name: Creating the inventory file
+  template:
+    src: inventory.j2
+    dest: "{{ work_dir }}/ansible-tower-setup-{{ tower_version }}/inventory"
+
+- name: Running the Ansible Tower installer
+  shell: "{{ work_dir }}/ansible-tower-setup-{{ tower_version }}/setup.sh"

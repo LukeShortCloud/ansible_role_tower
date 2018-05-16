@@ -1,0 +1,4 @@
+---
+- hosts: tower0
+  roles:
+    - tower

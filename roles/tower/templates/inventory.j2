@@ -1,0 +1,43 @@
+[tower]
+{% if deployment_type == "aio" %}
+{{ tower_hosts[0].hostname }}{% if tower_hosts[0].ip_address is defined %} ansible_host={{ tower_hosts[0].ip_address }} ansible_connection=local{% endif %}
+{% else %}
+{% for node in tower_hosts %}
+{{ node.hostname }}{% if node.ip_address is defined %} ansible_host={{ node.ip_address }}{% endif %}
+{% endfor %}
+{% endif %}
+
+
+{% if deployment_type != "aio" %}
+[database]
+{{ postgresql_host.hostname }}{% if postgresql_host.ip_address is defined %} ansible_host={{ postgresql_host.ip_address }}{% endif %}{% if deployment_type == "db_replication" %} pgsqlrep_role=master
+
+
+[database_replica]
+{{ postgresql_replica_host.hostname }}{% if postgresql_replica_host.ip_address is defined %} ansible_host={{ postgresql_replica_host.ip_address }}{% endif %} pgsqlrep_role=replica
+{% endif %}
+{% endif %}
+
+[all:vars]
+admin_password='{{ admin_password }}'
+
+pg_database='awx'
+pg_username='awx'
+
+{% if deployment_type != "aio" %}
+pg_host='{{ postgresql_host.hostname }}'
+{% endif %}
+pg_password='{{ pg_password }}'
+
+rabbitmq_port=5672
+rabbitmq_vhost=tower
+rabbitmq_username=tower
+rabbitmq_password='{{ rabbitmq_password }}'
+rabbitmq_cookie=cookiemonster
+
+# Needs to be true for fqdns and ip addresses
+rabbitmq_use_long_name=true
+
+# Isolated Tower nodes automatically generate an RSA key for authentication;
+# To disable this behavior, set this value to false
+# isolated_key_generation=true

@@ -1,0 +1,4 @@
+---
+admin_password: password
+pg_password: password
+rabbitmq_password: password
